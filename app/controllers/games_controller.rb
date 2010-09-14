@@ -21,12 +21,9 @@ class GamesController < ApplicationController
     respond_with games
   end
   
-  def rename
+  def statistics
     matchid = params[:matchid]
-    home, away = Game.rename(matchid)
-    respond_with [{
-      :home => home,
-      :away => away
-    }]
+    stats = Game.statistics(matchid)
+    respond_with [stats]
   end
 end

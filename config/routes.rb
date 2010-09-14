@@ -2,7 +2,7 @@ Svspel::Application.routes.draw do
   
   resources :games do
     collection do
-      get :rename, :rename
+      get :statistics, :statistics
     end
   end
   
