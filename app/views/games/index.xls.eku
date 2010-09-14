@@ -1,0 +1,109 @@
+__filename = "svspel_data.xls"
+
+# formats
+title_format = Spreadsheet::Format.new :bold => true, :size => 22
+header_format = Spreadsheet::Format.new :bold => true, :border => true
+
+# scheets
+games_scheet = xls.create_worksheet :name => "langen data"
+stats_scheet = xls.create_worksheet :name => "serie data"
+
+games_scheet[0,0] = "Langen Data"
+games_scheet.row(0).set_format(0, title_format)
+
+
+# langen games
+games_scheet.row(4).concat %w[Datum Namn 1 X 2 Liga]
+6.times { |i| games_scheet.row(4).set_format(i, header_format) }
+
+game_i = 5
+@games.each_with_index do |game, index|
+  games_scheet.row(game_i).concat([
+    game[:start], game[:stats][:home][:team], game[:ods_1], game[:ods_x,], game[:ods_2], game[:leag]]
+  )
+  games_scheet.row(game_i + 1).concat(
+    ["", game[:stats][:away][:team] ]
+  )
+  game_i = game_i + 3
+end
+
+
+# seriedata
+
+stats_scheet[0,0] = "Serie Data"
+stats_scheet.row(0).set_format(0, title_format)
+
+header = ["Liga","Lag","Hemma","Vinst","Oavgjord","Förlorad","Mål","Insläpp","Borta","Vinst","Oavgjord","Förlorad",
+          "Mål","Insläpp","Totala","Vinst","Oavgj","Förlor","Mål","Insläpp"]
+
+stats_scheet.row(4).concat header
+header.count.times { |i| stats_scheet.row(4).set_format(i, header_format) }
+
+i = 5
+@games.each do |game|
+  render_team = proc do |team, index|
+    stats_scheet.row(index).concat([
+      game[:leag],
+      team[:team],
+          
+      team[:home_games],     
+      team[:home_victorys],  
+      team[:home_equal],     
+      team[:home_losses],    
+      team[:home_goals].split(":").first,
+      team[:home_goals].split(":").last,     
+  
+      team[:away_games],     
+      team[:away_victorys],  
+      team[:away_equal],    
+      team[:away_losses],    
+      team[:away_goals].split(":").first,
+      team[:away_goals].split(":").last,
+  
+      team[:total_games],    
+      team[:total_victorys], 
+      team[:total_equal],    
+      team[:total_losses],   
+      team[:total_goals].split(":").first,
+      team[:total_goals].split(":").last,
+    ])
+  end
+  
+  render_team.call game[:stats][:home], i
+  render_team.call game[:stats][:away], i + 1
+  
+  i = i + 2
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

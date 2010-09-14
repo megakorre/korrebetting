@@ -1,0 +1,7 @@
+__filename = "svspel_data.xls"
+
+games_scheet = xls.create_worksheet
+
+games_scheet[0,0] = "hello world"
+
+

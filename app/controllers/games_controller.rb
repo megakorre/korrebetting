@@ -1,24 +1,27 @@
 require 'open-uri'
 class GamesController < ApplicationController
-  respond_to :xml, :json
+  respond_to :xml, :json, :xls
   
   def index
-    doc = Nokogiri::XML open("http://svenskaspel.se/xternal/XMLstartlista.asp?produktid=5")
-    games = []
+    doc = Nokogiri::XML open("http://svenskaspel.se/xternal/XMLkupong.asp?produktid=5")
+    @games = []
     doc.css("row").each do |row|
       match = row.at_css("match")
-      unless Date.parse(match[:start]) != (Date.today - 1.day) and match[:sport_name] != "Fotboll"
-        games.push({
-          :matchid => match[:id],
-          :home => match.at_css("home_team")[:name],
-          :away => match.at_css("away_team")[:name],
-          :ods_1 => row.at_css("alternative[name='1']")[:odds],
-          :ods_x => row.at_css("alternative[name='X']")[:odds],
-          :ods_2 => row.at_css("alternative[name='2']")[:odds]
+      if Date.parse(match[:start]) == Date.today and match[:sport_name] == "Fotboll"
+        @games.push({
+          :matchid =>   match[:id],
+          :start =>     match[:start],
+          :leag =>      match[:league_name],
+          :home =>      match.at_css("home_team")[:name],
+          :away =>      match.at_css("away_team")[:name],
+          :ods_1 =>     row.at_css("alternative[name='1']")[:odds].to_f,
+          :ods_x =>     row.at_css("alternative[name='X']")[:odds].to_f,
+          :ods_2 =>     row.at_css("alternative[name='2']")[:odds].to_f,
+          :stats =>     Game.statistics(match[:id])
         })
       end
     end
-    respond_with games
+    respond_with @games
   end
   
   def statistics
