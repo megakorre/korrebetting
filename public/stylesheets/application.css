@@ -1,0 +1,83 @@
+body {
+  padding: 5px;
+}
+
+#page {
+	margin: auto;
+	position: relative;
+	width: 960px;
+}
+
+#fotter {
+  margin-top: 20px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #000;
+  height: 30px;
+}
+
+ul.menu {
+  list-style: none;
+  height: 30px;
+  padding: 10px;
+}
+
+.messege p {
+  font-size: 20px;
+}
+
+select, input[type="text"], input[type="password"], input[type="image"], textarea {
+  font:99% helvetica,arial,freesans,sans-serif;
+}
+
+.standard_form form input.text {
+  font-size:110%;
+}
+
+.messege input[type=text] {
+  width: 300px;
+}
+
+div.val {
+  width: 30px; 
+  height: 150px; 
+  width: 200px;
+}
+
+select { font-size : 17px; }
+
+div.val table {
+  float: left;
+}
+
+ul.menu li {
+  float: left;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+ul.menu li.not-last {
+  border-right-style: solid;
+  border-right-color: #000;
+  border-right-width: 1px;
+}
+
+body {font-family: georgia, serif; font-size: 10px; color: #262626; font-size: 20px;}
+a { color: #8e0100; text-decoration: none; font-size: 20px;}
+a:hover {text-decoration: underline;}
+a:visited {color: #600;}
+em {font-style: italic;}
+strong {font-weight: bold;}
+h2 {margin: 1.35em 0 .55em; font-size: 2.8em;}
+input:focus,
+textarea:focus {color: #262626 !important;}
+.container {width: 951px; margin: 0 auto; overflow: visible;}
+.hidden {display: none;}
+.noBorderTop {border-top-width: 0 !important;}
+.noBorderBottom {border-bottom-width: 0 !important;}
+.noMarginTop {margin-top: 0 !important;}
+.noMarginRight {margin-right: 0 !important;}
+.noMarginBottom {margin-bottom: 0 !important;}
+.noMarginLeft {margin-left: 0 !important;}
+.smaller {font-size: smaller}
+/* @end */
