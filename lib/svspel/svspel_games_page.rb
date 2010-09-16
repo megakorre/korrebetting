@@ -1,15 +1,9 @@
-require 'open-uri'
-class GamesController < ApplicationController
-  respond_to :xml, :json, :xls
-
-  def document
-    
-  end
+class SvspelGamesPage < WebPage
+  url "http://svenskaspel.se/xternal/XMLkupong.asp?produktid=5", :as_xml => true
   
-  def index
-    doc = Nokogiri::XML open("http://svenskaspel.se/xternal/XMLkupong.asp?produktid=5")
-    @games = []
-    doc.css("row").each do |row|
+  def games
+    games = []
+    page.css("row").each do |row|
       match = row.at_css("match")
       if Date.parse(match[:start]) == Date.today and match[:sport_name] == "Fotboll"
         @games.push({
@@ -21,21 +15,9 @@ class GamesController < ApplicationController
           :ods_1 =>     row.at_css("alternative[name='1']")[:odds].to_f,
           :ods_x =>     row.at_css("alternative[name='X']")[:odds].to_f,
           :ods_2 =>     row.at_css("alternative[name='2']")[:odds].to_f
-          #:stats =>     Game.statistics(match[:id])
         })
       end
     end
-    respond_with @games
-  end
-  
-  def statistics
-    doc = Nokogiri::XML params[:matches]
-    @res = []
-    doc.css("match").each do |match|
-      @res.push(Game.statistics(match[:id]))
-    end
-    respond_to do |format|
-      format.xml { @res }
-    end
+    return games
   end
 end

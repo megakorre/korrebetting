@@ -1,1 +1,6 @@
-<a href="/games.xls">Ladda ner match data (40 sekunder)</a>
+<input type="button" value="Ladda ner match data (40 sekunder)" id="download-games" />
+<form method="POST" action="/document">
+  <input id="res" type="hidden" value=""></input>
+  <input type="submit" style="display:none" id="download" value="download"></input>
+</form>
+<span id="info"/>

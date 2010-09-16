@@ -1,9 +1,11 @@
 Svspel::Application.routes.draw do
-  match "/generate", :to => "document#generate"
+  match "/login", :to => "session#new" , :as => :login
   
+  
+  resources :session
   resources :games do
     collection do
-      get :statistics, :statistics
+      post :statistics, :statistics
     end
   end
   

@@ -1,0 +1,14 @@
+<%= form_tag("/session", :method => "post") do %>
+  
+  <p>
+    <label for="username">Username:</label>
+    <input type="text" name="username"></input>
+  </p>
+  
+  <p>
+    <label for="password">Password</label>
+    <input type="password" name="password"></input>
+  </p>
+  
+  <input type="submit" value="login"></input>
+<% end %>
