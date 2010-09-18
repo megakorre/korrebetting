@@ -2,6 +2,11 @@ class SessionController < ApplicationController
   def new
   end
   
+  def logout
+    session[:authenticated] = nil
+    redirect_to :root
+  end
+  
   def create
     username = params[:username]
     password = params[:password]

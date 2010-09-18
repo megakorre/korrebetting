@@ -3,7 +3,7 @@ class GamesController < ApplicationController
   respond_to :xml, :json, :xls
 
   def document
-    
+    @games = JSON.parse(params[:data])
   end
   
   def index
@@ -21,7 +21,6 @@ class GamesController < ApplicationController
           :ods_1 =>     row.at_css("alternative[name='1']")[:odds].to_f,
           :ods_x =>     row.at_css("alternative[name='X']")[:odds].to_f,
           :ods_2 =>     row.at_css("alternative[name='2']")[:odds].to_f
-          #:stats =>     Game.statistics(match[:id])
         })
       end
     end
@@ -29,13 +28,7 @@ class GamesController < ApplicationController
   end
   
   def statistics
-    doc = Nokogiri::XML params[:matches]
-    @res = []
-    doc.css("match").each do |match|
-      @res.push(Game.statistics(match[:id]))
-    end
-    respond_to do |format|
-      format.xml { @res }
-    end
+    stats = Game.statistics(params[:match])
+    respond_with [stats]
   end
 end

@@ -1,6 +1,4 @@
-<input type="button" value="Ladda ner match data (40 sekunder)" id="download-games" />
-<form method="POST" action="/document">
-  <input id="res" type="hidden" value=""></input>
-  <input type="submit" style="display:none" id="download" value="download"></input>
-</form>
-<span id="info"/>
+<input type="button" value="Ladda ner match data" id="download-games" />
+<%= form_tag "/document.xls", :method => :post, :id => "download" do %>
+  <input id="res" type="hidden" name="data"></input>
+<% end %>

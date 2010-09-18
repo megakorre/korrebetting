@@ -11,7 +11,7 @@ class Game
     doc = Nokogiri::HTML open("https://stats.betradar.com/statistics/svenskaspel/main.php?page=guth_statistics_headtohead&tableid=#{bettids[:table]}&matchid=#{bettids[:match]}&language=se")
     home = parse_statistics(doc, :home)
     away = parse_statistics(doc, :away)
-    { :home => home, :away => away }
+    { :home => home, :away => away, :match => match }
   end
   
   def self.col(cols, id)

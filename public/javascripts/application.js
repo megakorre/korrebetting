@@ -1,63 +1,51 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
-$(function() {
-  var global_matches = null;
-  var request_count = 0;
-  var request_maid = 0;
-  var xml = $("<data />");
+function JobbContext(args) {
+  var jobs = args.jobs;
   
-  function suround(el) {
-    return $("<div />").append($(el).clone()).html();
-  }
-  
-  function done(args) {
-    $("#res").val(suround(xml));
-    $("#download").show();
-  }
-  
-  function prosses_requests(matches) {
-    $("#info").text("fetching statistics........ 0%");
-    
-    $(matches).each(function(index) {
-      var container = $("<data />");
-      var match = matches[index];
-      for(var i = 0; i < match.length; i++) {
-        $(container).append(
-          $("<match />").attr("id", match[i])
-        );
+  function prossesJobb(job) {
+    args.job(job, function() {
+      var job = jobs.pop();
+      if(job !== undefined) {
+        prossesJobb(job);
+      } else {
+        args.next();
       }
-      
-      $.post('/games/statistics.xml', {matches: suround(container) }, function(data, textStatus, xhr) {
-        request_maid++;
-        $("#info").text("fetching statistics........ " + ((request_maid / request_count) * 100) + "%");
-        if(request_count == request_maid) {
-          done();
-        }
-      }, 'xml');      
     });
   }
+  var job = jobs.pop();
+  if(job !== undefined) {
+    prossesJobb(job);
+  } else {
+    args.next();
+  }
+}
+
+var data = null;
+
+$(function() {
   
   $("#download-games").click(function() {
-    $("#info").text("fetching games...........");
-    $.get('/games.xml', null, function(data, textStatus, xhr) {
-      global_matches = data;
-      var count = $(data).find("object").length;
-      var matches = $(data).find("object").map(function(index, elem) {
-        return $(this).find("matchid").text();
-      }).toArray();
-      
-      var res = [];
-      for (var i = 0; i < count; i = i + 5) {
-        res.push(matches.slice(i, i + 5));
-      }
-      request_count = res.length;
-      prosses_requests(res);
-    }, 'xml');
-    
-    
-    return false;
+    $.getJSON('/games.json', {}, function(json, textStatus) {
+      data = json;
+      JobbContext({
+        jobs: data.slice(),
+        job: function(item, callback) {
+          $.getJSON('/games/statistics.json', {match: item.matchid }, function(json, textStatus) {
+            for(i in data) {
+              if(data[i].matchid == item.matchid) {
+                data[i].stats = json[0];
+              }
+            }
+            callback();
+          });
+        },
+        next: function() {
+          $("#res").val($.toJSON(data));
+          $("#download").submit();
+        }
+      });
+    });
   });
-  
-  
 });
