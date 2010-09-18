@@ -7,9 +7,13 @@ header_format = Spreadsheet::Format.new :bold => true, :border => true
 # scheets
 games_scheet = xls.create_worksheet :name => "langen data"
 stats_scheet = xls.create_worksheet :name => "serie data"
+last_games_scheet = xls.create_worksheet :name => "senaste 6 matcher"
 
 games_scheet[0,0] = "Langen Data"
 games_scheet.row(0).set_format(0, title_format)
+
+last_games_scheet[0,0] = "Senaste 6 Matcher"
+last_games_scheet.row(0).set_format(0, title_format)
 
 
 # langen games
@@ -72,7 +76,28 @@ i = 5
   i = i + 2
 end
 
+# last games
 
+last_games_scheet.row(4).concat %w[Lag mål insläpp]
+3.times { |i| last_games_scheet.row(4).set_format(i, header_format) }
+
+i = 5
+@games.each do |item|
+  
+  last_games_scheet[i, 0] = item["stats"]["home"]["team"]
+  item["stats"]["home"]["last_games"].each do |prev_game|
+    last_games_scheet[i,1] = prev_game[0]
+    last_games_scheet[i, 2] = prev_game[1]
+    i = i + 1
+  end
+  
+  last_games_scheet[i, 0] = item["stats"]["away"]["team"]
+  item["stats"]["away"]["last_games"].each do |prev_game|
+    last_games_scheet[i, 1] = prev_game[0]
+    last_games_scheet[i, 2] = prev_game[1]
+    i = i + 1
+  end
+end
 
 
 

@@ -6,9 +6,17 @@ class Game
     { :match => url.split("matchid%3D").last.split("&").first, :table => url.split("tableid%3D").last.split("%").first }
   end
     
+  # .headtohead_lastmatches_hometd .table_content_td.headtohead_resulttd
+  # .headtohead_lastmatches_awaytd .headtohead_lastmatches_matchestable .table_content_td.headtohead_resulttd
+  # https://stats.betradar.com/statistics/svenskaspel/main.php?page=guth_statistics_headtohead&numberOfMatches=4
+  #  &lastMatchesTypeAway=Total&lastMatchesTypeHome=Home&lastMatchesTournamentTypeAwayTeam=All&lastMatchesTournamentTypeHomeTeam=All&tableid=4267&language=se&numberOfMatches=4&teamidhome=364647&teamidaway=5235&lastMatchesTypeHome=Home&lastMatchesTypeAway=Away  
+  
+  # &lastMatchesTypeHome=Home&lastMatchesTypeAway=Away&numberOfMatches=6
+  #  
+    
   def self.statistics(match)
     bettids = betradar_ids(match)
-    doc = Nokogiri::HTML open("https://stats.betradar.com/statistics/svenskaspel/main.php?page=guth_statistics_headtohead&tableid=#{bettids[:table]}&matchid=#{bettids[:match]}&language=se")
+    doc = Nokogiri::HTML open("https://stats.betradar.com/statistics/svenskaspel/main.php?page=guth_statistics_headtohead&tableid=#{bettids[:table]}&matchid=#{bettids[:match]}&language=se&lastMatchesTypeHome=Home&lastMatchesTypeAway=Away&numberOfMatches=6")
     home = parse_statistics(doc, :home)
     away = parse_statistics(doc, :away)
     { :home => home, :away => away, :match => match }
@@ -39,7 +47,19 @@ class Game
       :away_victorys =>   col(cols,17),
       :away_equal =>      col(cols,18),
       :away_losses =>     col(cols,19),
-      :away_goals =>      col(cols,20)
+      :away_goals =>      col(cols,20),
+      :last_games =>      parse_last_games(doc, pos)
     }
+  end
+  
+  def self.last_games_css
+    { :home => ".headtohead_lastmatches_hometd .table_content_td.headtohead_resulttd",
+      :away => ".headtohead_lastmatches_awaytd .headtohead_lastmatches_matchestable .table_content_td.headtohead_resulttd" }
+  end
+  
+  def self.parse_last_games(doc, pos)
+    doc.css(last_games_css[pos]).map do |item|
+      item.text.strip.split(":").map(&:to_i)
+    end
   end
 end
