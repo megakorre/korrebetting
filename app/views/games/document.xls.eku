@@ -19,12 +19,11 @@ games_scheet.row(4).concat %w[Datum Namn 1 X 2 Liga]
 game_i = 5
 @games.each_with_index do |game, index|
   games_scheet.row(game_i).concat([
-    game["start"], game["stats"]["home"]["team"], game["ods_1"], game["ods_x"], game["ods_2"], game[":leag"]])
+    game["start"], game["stats"]["home"]["team"], game["ods_1"], game["ods_x"], game["ods_2"], game["leag"]])
   games_scheet.row(game_i + 1).concat(
     ["", game["stats"]["away"]["team"] ])
   game_i = game_i + 3
 end
-
 
 # seriedata
 

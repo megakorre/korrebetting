@@ -1,4 +1,9 @@
 <input type="button" value="Ladda ner match data" id="download-games" />
+<br />
+<br />
+<br />
 <%= form_tag "/document.xls", :method => :post, :id => "download" do %>
   <input id="res" type="hidden" name="data"></input>
 <% end %>
+<div id="progressbar" style="display: none;"></div>
+
