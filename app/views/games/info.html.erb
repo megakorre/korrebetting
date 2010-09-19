@@ -1,0 +1,26 @@
+<h3>Info</h3>
+
+<p>
+  Antal Fotboll Matcher: 
+  <%= @doc.css("row match[sport_name='Fotboll']").count %>
+</p>
+
+<p>
+  Antal Fotboll Matcher idag:
+  <%= @doc.css("row match[sport_name='Fotboll'][start*='#{Date.today}']").count %>
+</p>
+
+<p>
+  Fotbolls ligor i datan
+  <% leags = [] %>
+  <% @doc.css("row match[sport_name='Fotboll']").each do |match|
+      unless leags.include?(match[:league_name])
+        leags.push(match[:league_name])
+      end
+    end %>
+  <ul class="leagous">
+    <% leags.each do |leag| %>
+      <li><%= leag %></li>
+    <% end %>
+  </ul>  
+</p>

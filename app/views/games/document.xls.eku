@@ -5,11 +5,11 @@ title_format = Spreadsheet::Format.new :bold => true, :size => 22
 header_format = Spreadsheet::Format.new :bold => true, :border => true
 
 # scheets
-games_scheet = xls.create_worksheet :name => "langen data"
+games_scheet = xls.create_worksheet :name => "lången matcher"
 stats_scheet = xls.create_worksheet :name => "serie data"
 last_games_scheet = xls.create_worksheet :name => "senaste 6 matcher"
 
-games_scheet[0,0] = "Langen Data"
+games_scheet[0,0] = "Lången Matcher"
 games_scheet.row(0).set_format(0, title_format)
 
 last_games_scheet[0,0] = "Senaste 6 Matcher"

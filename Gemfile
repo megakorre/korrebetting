@@ -6,3 +6,4 @@ gem 'inherited_resources'
 gem 'sqlite3-ruby', :require => 'sqlite3'
 gem "ekuseru"
 gem 'json'
+gem 'httparty'

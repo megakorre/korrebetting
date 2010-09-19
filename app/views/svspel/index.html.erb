@@ -1,9 +1,28 @@
 <input type="button" value="Ladda ner match data" id="download-games" />
-<br />
-<br />
+<br /> <br />
+
+<a href="#" id="show-settings">
+  Visa Instälningar
+</a>
+
+<div id="options" style="display:none;">
+  Visa Spelade Matcher?
+  <input type="checkbox" id="played" />
+  |
+  Visa Dag
+  <select id="date">
+    <% (0..6).each do |i| %>
+      <option value="<%= Date.today + i %>">
+        <%= (Date.today + i).wekday %>
+      </option>
+    <% end %>
+  </select>
+</div>
+
 <br />
 <%= form_tag "/document.xls", :method => :post, :id => "download" do %>
   <input id="res" type="hidden" name="data"></input>
 <% end %>
+<br />
 <div id="progressbar" style="display: none;"></div>
 
