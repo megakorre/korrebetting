@@ -28,6 +28,9 @@ class Game
   
   def self.parse_statistics(doc, pos)
     row = doc.at_css("table.table_whole.leaguetable_table tr.headtohead_formtable_#{pos}")
+    if row == nil
+      return nil
+    end
     cols = row.css("td")
     {
       :team =>            col(cols,2),

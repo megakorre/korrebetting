@@ -11,14 +11,16 @@ class GamesController < ApplicationController
   public
 
   def document
-    @games = JSON.parse(params[:data])
+    @games = []
+    for game in JSON.parse(params[:data])
+      if game
+        @games.push(game)
+      end
+    end
   end
   
   def info
     @doc = Nokogiri::XML open(games_url)
-    #@req = HTTParty.post("https://svenskaspel.se/isapi/mhandler.dll", 
-    #        :body => "<svsxml channel='WEB'><get_oddset_x ver='1.0'><product_id>32</product_id><list_id>3205</list_id></get_oddset_x></svsxml>").body
-    #@doc2 = Nokogiri::XML @req
   end
   
   def index
@@ -40,7 +42,7 @@ class GamesController < ApplicationController
       end
     end
     puts @games.count
-    respond_with @games
+    respond_with(@games)
   end
   
   def statistics

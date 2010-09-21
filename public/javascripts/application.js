@@ -61,7 +61,11 @@ $(function() {
             $.getJSON('/games/statistics.json', {match: item.matchid }, function(json, textStatus) {
               for(i in data) {
                 if(data[i].matchid == item.matchid) {
-                  data[i].stats = json[0];
+                  if(json[0].home === null || json[0].away === null) {
+                    delete data[i];
+                  } else {
+                    data[i].stats = json[0];
+                  }
                 }
               }
               callback();
